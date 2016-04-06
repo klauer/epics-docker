@@ -20,14 +20,11 @@ RUN apt-get install -yq procserv telnet sysv-rc-softioc
 # get areadetector dependencies
 RUN apt-get install -yq libhdf5-dev libx11-dev libxext-dev libxml2-dev libpng12-dev libbz2-dev libfreetype6-dev
 
-USER jovyan
-
 # Install Python 3 packages
 RUN conda install --yes \
     'python=3.5*' \
     'numpy=1.10*' \
     && conda clean -yt
-
 
 # pip install things not yet on lightsource2 channel.
 RUN conda install --yes pip
