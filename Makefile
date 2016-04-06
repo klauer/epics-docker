@@ -30,7 +30,7 @@ tmpnb: tutorial-image
 		-v /var/run/docker.sock:/docker.sock jupyter/tmpnb python orchestrate.py \
 		--image=nsls2/tutorial --cull_timeout=$(CULL_TIMEOUT) --cull_period=$(CULL_PERIOD) \
 		--logging=$(LOGGING) --pool_size=$(POOL_SIZE) \
-		--command="ipython notebook --NotebookApp.base_url={base_path} --ip=0.0.0.0 --port {port} --NotebookApp.server_extensions=\"['extensions.start_mongo', 'extensions.start_motorsim', 'extensions.start_adsim']\""
+		--command="ipython notebook --NotebookApp.base_url={base_path} --ip=0.0.0.0 --port {port} --NotebookApp.server_extensions=\"['extensions.start_supervisord']\""
 
 
 dev: cleanup proxy tmpnb open
@@ -64,5 +64,5 @@ ifeq (cpnbs,$(firstword $(MAKECMDGOALS)))
 endif
 
 cpnbs:
-	docker cp $(CPNBS_ARGS):/home/jovyan/work/notebooks .
+	docker cp $(CPNBS_ARGS):/home/jovyan/work/tutorial .
 	docker cp $(CPNBS_ARGS):"/home/jovyan/work/Welcome to the NSLS-II Data Acquisition and Analysis Sandbox.ipynb" notebooks
