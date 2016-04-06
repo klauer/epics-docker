@@ -20,23 +20,12 @@ RUN apt-get install -yq procserv telnet sysv-rc-softioc
 # get areadetector dependencies
 RUN apt-get install -yq libhdf5-dev libx11-dev libxext-dev libxml2-dev libpng12-dev libbz2-dev libfreetype6-dev
 
-# Install Python 3 packages
-RUN conda install --yes \
-    'python=3.5*' \
-    'numpy=1.10*' \
-    && conda clean -yt
-
 # pip install things not yet on lightsource2 channel.
-RUN conda install --yes pip
+RUN apt-get install -yq python3 python3-pip python3-numpy
 # dependency dragged in from (at least) ophyd.commands
-RUN pip install https://github.com/nsls-ii/pyepics/zipball/master#egg=pyepics
-
-# fix for 'missing PC' symbol, readline bug
-# RUN conda install -c lightsource2 --yes readline && conda clean -yt
+RUN pip3 install https://github.com/pyepics/pyepics/zipball/master#egg=pyepics
 
 # clone and build EPICS device simulation code
-USER root
-
 RUN mkdir /epics && mkdir /epics/iocs
 RUN mkdir /epics/src
 RUN git clone https://github.com/klauer/areadetector-1-9-1.git /epics/src/areadetector-1-9-1
