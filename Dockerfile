@@ -8,7 +8,6 @@ USER root
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-key 7F0CEB10
 
 RUN apt-get update
-RUN mkdir -p /data/db
 # Install the EPICS stack
 RUN apt-get install -yq wget
 
@@ -46,8 +45,13 @@ RUN mkdir /epics/src
 RUN git clone https://github.com/klauer/areadetector-1-9-1.git /epics/src/areadetector-1-9-1
 RUN cd /epics/src/areadetector-1-9-1 && make -s -j4 all
 
+# Clone the sim IOC with simulated motors/areadetectors
 RUN git clone https://github.com/klauer/simioc.git /epics/iocs/simioc
 RUN cd /epics/iocs/simioc && make -s all
+
+# Clone the pyepics testIOC for its test suite
+RUN git clone https://github.com/pyepics/testioc /epics/iocs/pyepics_testioc
+RUN cd /epics/iocs/pyepics_testioc && make -s all
 
 # flash the neighbors
 EXPOSE 5064 5065
